@@ -41,30 +41,44 @@ public class BookService {
         return null;
     }
 
-    public ArrayList<Book> getYearEqual(String year){
+    public ArrayList<Book> getYear(String year, String action){
         ArrayList<Book> result = new ArrayList<>();
         for(Book temp : books){
-            if(temp.getYear().equals(year))
-                result.add(temp);
-        }
-        return result;
-    }
-    public ArrayList<Book> getYearSmaller(String year){
-        ArrayList<Book> result = new ArrayList<>();
-        for(Book temp : books){
-            if(Integer.parseInt(temp.getYear())<Integer.parseInt(year))
-                result.add(temp);
+            if(action.equalsIgnoreCase("equal")){
+                if(temp.getYear().equalsIgnoreCase(year))
+                    result.add(temp);
+            }else if(action.equalsIgnoreCase("small")){
+                if(temp.getYear().compareToIgnoreCase(year)<0)
+                    result.add(temp);
+            }else{
+                if(temp.getYear().compareToIgnoreCase(year)>0)
+                    result.add(temp);
+            }
         }
         return result;
     }
 
-    public ArrayList<Book> getYearBigger(String year){
-        ArrayList<Book> result = new ArrayList<>();
-        for(Book temp : books){
-            if(Integer.parseInt(temp.getYear())>Integer.parseInt(year))
-                result.add(temp);
+    public boolean addBook(Book book){
+        return books.add(book);
+    }
+    public boolean updateBook(int id, Book book){
+        for(Book temp: books){
+            if(temp.getId()==id){
+                temp.setName(book.getName());
+                temp.setYear(book.getYear());
+                temp.setAuthor(book.getAuthor());
+                return true;
+            }
         }
-        return result;
+        return false;
+    }
+    public boolean deleteBook(int id){
+        for(Book temp: books){
+            if(temp.getId()==id){
+                return books.remove(temp);
+            }
+        }
+        return false;
     }
 }
 
